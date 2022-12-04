@@ -55,3 +55,7 @@ gem 'redis-namespace'
 gem "sidekiq", "~> 7.0"
 gem 'elasticsearch-model', github: 'elastic/elasticsearch-rails', branch: '5.x'
 gem 'elasticsearch-rails', github: 'elastic/elasticsearch-rails', branch: '5.x'
+
+gem 'yaml_db'
+gem "sidekiq-cron"
+gem 'mysql2'

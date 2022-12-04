@@ -20,9 +20,9 @@ class MessagesController < ApplicationController
   def create
 
     @msg = Message.new
-    @mid = reterive_last_msg_id params[:chat_id]
-    @msg.text_msg= params[:txt]
-    @app = App.find_by_token params[:token]
+    @mid = reterive_last_msg_id params[:app_id] ,params[:id]
+    @msg.text_msg= params[:text_msg]
+    @app = App.find_by_token params[:app_id]
     @chat = Chat.where(:cid => params[:chat_id]).where(:app_id => @app.id)[0]
     
     
@@ -56,7 +56,7 @@ class MessagesController < ApplicationController
     def message_params
       params.require(:message).permit(:text_msg)
     end
-    def reterive_last_msg_id(app_token)
-      $redis.incr("message_count_$#{app_token}")
+    def reterive_last_msg_id(app_id,id)
+      $redis.incr("message_count_#{app_id}_#{id}")
     end
 end

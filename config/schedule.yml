@@ -1,0 +1,7 @@
+message_calculate:
+   cron: "*/1 * * * *"
+   class: "MessageCalculate"
+
+chat_calculate:
+   cron: "*/1 * * * *"
+   class: "ChatCalculate"

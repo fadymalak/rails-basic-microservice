@@ -25,6 +25,16 @@ class AppsController < ApplicationController
     end
   end
 
+
+
+  
+  # "id": 1,
+  # "name": "asdasD",
+  # "token": "uERDjBeI2Yz2KqgLwjJLVNia",
+  # "chats_count": 0,
+  # "created_at": "2022-12-04T19:54:07.128Z",
+  # "updated_at": "2022-12-04T19:54:07.128Z"
+# }
   # PATCH/PUT /apps/1
   def update
     if @app.update(app_params)

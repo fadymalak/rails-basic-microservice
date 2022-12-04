@@ -1,31 +1,32 @@
-version '2'
-services
-  redis1
-    image redis
-    ports
-      - "6379:6379"
+version: '3'
+services:
+    redis:
+      image: redis:latest
+    db:
+      image: mysql:latest
+      environment:
+        - MYSQL_ROOT_PASSWORD=123
+      volumes:
+        - db-data:/var/lib/mysql
+    es:
+      image: elasticsearch:7.6.0
 
-  db
-    image postgres
-    environment
-      - POSTGRES_PASSWORD=adminadmin
-      - DB_HOST=host.docker.internal
-      - POSTGRES_USER=admin
-      - PGDATA=varlibpostgresqldatapgdata
-    ports
-      - "5432:5432"
-    volumes
-      - datadbvarlibpostgresqldatapgdata
-
-  rabbit
-    image rabbitmq3-management
-    environment
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=admin2017
-    ports
-      - "5672:5672"
-
-volumes
- datadb  
-    external true
-    name datadb
+    sidekiq:
+      build: .
+      command: bundle exec sidekiq
+      depends_on:
+        - redis
+      volumes:
+        - .:/app
+    web:
+      build: .
+      command: bundle exec rails s -p 3000 -b '0.0.0.0'
+      volumes:
+        - .:/app
+      ports:
+        - "3000:3000"
+      depends_on:
+        - db
+        - sidekiq
+volumes:
+  db-data:

@@ -17,8 +17,8 @@ class ChatsController < ApplicationController
   def create
 
     @chat = Chat.new
-    @cid = reterive_last_app_id params[:token]
-    @app = App.find_by_token params[:token]
+    @cid = reterive_last_app_id params[:app_id]
+    @app = App.find_by_token params[:app_id]
     @chat.cid= @cid
     @chat.app_id = @app.id
     AddChatJob.perform_now(cid: @cid , app_id: @app.id)
@@ -52,6 +52,6 @@ class ChatsController < ApplicationController
     end
     
     def reterive_last_app_id(app_token)
-      $redis.incr("chat_count_$#{app_token}")
+      $redis.incr("chat_count_#{app_token}")
     end
 end
