@@ -25,7 +25,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_03_141258) do
     t.bigint "app_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["app_id"], name: "index_app_id"
     t.index ["app_id"], name: "index_chats_on_app_id"
+    t.index ["cid"], name: "index_chat_id"
   end
 
   create_table "messages", charset: "utf8mb3", force: :cascade do |t|
@@ -34,7 +36,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_03_141258) do
     t.bigint "chat_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_chat_id"
     t.index ["chat_id"], name: "index_messages_on_chat_id"
+    t.index ["mid"], name: "index_chat_message_id"
   end
 
   add_foreign_key "chats", "apps"

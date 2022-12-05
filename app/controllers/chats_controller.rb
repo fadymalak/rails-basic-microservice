@@ -1,5 +1,5 @@
 class ChatsController < ApplicationController
-  before_action :set_chat, only: %i[  update destroy ]
+  before_action :set_chat, only: %i[ show update destroy ]
 
   # GET /app/:app_id/chats
   def index
@@ -9,14 +9,13 @@ class ChatsController < ApplicationController
     render json: @chats
   end
 
-  # GET /chats/1
+  # GET /apps/:app_id/chats/1
   def show
-    @app = App.find_by_token params[:app_id]
-    @chats = Chat.joins(:app).where("`chats`.`app_id` = ? and `chats`.`cid` = ?",@app.id,params[:id])
+    
     render json: @chat
   end
 
-  # POST /apps/:app_id/chats
+  # POST /apps/:app_id/chats/:id
   def create
 
     @chat = Chat.new
@@ -46,7 +45,10 @@ class ChatsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_chat
-      @chat = Chat.find(params[:id])
+      @app = App.find_by_token params[:app_id]
+      puts @app.id
+      puts params[:id]
+      @chat = Chat.joins(:app).where("`chats`.`app_id` = ?",@app.id).where(" `chats`.`cid` = ?",params[:id])
     end
 
     # Only allow a list of trusted parameters through.

@@ -6,6 +6,8 @@ class CreateMessages < ActiveRecord::Migration[7.0]
       t.references  :chat, foreign_key: true
 
       t.timestamps
+      t.index ["chat_id"] , name: 'index_chat_id', using: :btree
+      t.index ["mid"], name: "index_chat_message_id", using: :btree
     end
   end
 end

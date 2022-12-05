@@ -1,5 +1,5 @@
 class MessagesController < ApplicationController
-  before_action :set_message, only: %i[ update destroy ]
+  before_action :set_message, only: %i[ show update destroy ]
 
   # GET /messages
   def index
@@ -13,9 +13,7 @@ class MessagesController < ApplicationController
 
   # GET /apps/:app_id/chats/:chat_id/messages/1
   def show
-    @app = App.find_by_token params[:app_id]
-    puts params[:chat_id]
-    @message = Message.joins(:chat).where("`chats`.`cid` =? and `chats`.`app_id` = ?",params[:chat_id],@app.id)
+    
     render json: @message
   end
 
@@ -52,7 +50,9 @@ class MessagesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_message
-      @message = Message.find(params[:id])
+      @app = App.find_by_token params[:app_id]
+      puts params[:chat_id]
+      @message = Message.joins(:chat).where("`chats`.`cid` =? and `chats`.`app_id` = ?",params[:chat_id],@app.id)
     end
 
     # Only allow a list of trusted parameters through.
