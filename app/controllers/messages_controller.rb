@@ -1,5 +1,5 @@
 class MessagesController < ApplicationController
-  before_action :set_message, only: %i[ show update destroy ]
+  before_action :set_message, only: %i[ update destroy ]
 
   # GET /messages
   def index
@@ -11,12 +11,15 @@ class MessagesController < ApplicationController
     render json: @messages
   end
 
-  # GET /messages/1
+  # GET /apps/:app_id/chats/:chat_id/messages/1
   def show
+    @app = App.find_by_token params[:app_id]
+    puts params[:chat_id]
+    @message = Message.joins(:chat).where("`chats`.`cid` =? and `chats`.`app_id` = ?",params[:chat_id],@app.id)
     render json: @message
   end
 
-  # POST /messages
+  # POST /apps/:app_id/chats/:chat_id/messages
   def create
 
     @msg = Message.new

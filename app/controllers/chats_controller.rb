@@ -1,19 +1,22 @@
 class ChatsController < ApplicationController
-  before_action :set_chat, only: %i[ show update destroy ]
+  before_action :set_chat, only: %i[  update destroy ]
 
-  # GET /chats
+  # GET /app/:app_id/chats
   def index
-    @chats = Chat.all
+    @app = App.find_by_token params[:app_id]
+    @chats = Chat.joins(:app).where("`chats`.`app_id` = ?",@app.id)
 
     render json: @chats
   end
 
   # GET /chats/1
   def show
+    @app = App.find_by_token params[:app_id]
+    @chats = Chat.joins(:app).where("`chats`.`app_id` = ? and `chats`.`cid` = ?",@app.id,params[:id])
     render json: @chat
   end
 
-  # POST /chats
+  # POST /apps/:app_id/chats
   def create
 
     @chat = Chat.new
