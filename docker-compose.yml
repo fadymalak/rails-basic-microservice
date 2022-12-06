@@ -13,13 +13,13 @@ services:
         - mariadb:/var/lib/mysql
       ports:
         - "3306:3306"
-    # es:
-    #   image: elasticsearch:7.6.0
-    #   environment:
-    #     - "discovery.type=single-node"
-    #   ports:
-    #     - "9200:9200"
-    #     - "9300:9300"
+    es:
+      image: elasticsearch:7.6.0
+      environment:
+        - "discovery.type=single-node"
+      ports:
+        - "9200:9200"
+        - "9300:9300"
     app:
       build: .
       command: bash -c ' ./railss.sh'
@@ -34,7 +34,7 @@ services:
       depends_on:
         - db
         - redis
-        # - es
+        - es
 
     sidekiq :
       build: .
